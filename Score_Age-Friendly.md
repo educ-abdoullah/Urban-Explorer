@@ -1,11 +1,9 @@
----
-
 # Paris Age-Friendly Score (PAFS)
 **Indicateur d'attractivité urbaine par tranche d'âge**
 
 ## 1. Présentation de l'Indicateur
 ### Objectif du projet
-L'objectif est de créer un indicatuer qui permet de visualiser le "niveau d'intérêt" d'un quartier en fonction de l'âge de l'utilisateur. 
+L'objectif est de créer un indicateur qui permet de visualiser le "niveau d'intérêt" d'un quartier en fonction de l'âge de l'utilisateur. 
 
 Plutôt que de dire qu'un quartier est "bien" ou "mauvais" de manière absolue, notre indicateur **PAFS** (Paris Age-Friendly Score) reconnaît que les besoins d'un étudiant ne sont pas les mêmes que ceux d'une famille avec enfants ou d'un retraité. La carte s'adaptera dynamiquement pour révéler les zones les mieux équipées pour chaque profil.
 
