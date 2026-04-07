@@ -119,11 +119,63 @@ Ces variables servent à construire les indicateurs intermédiaires puis le scor
 
 ---
 
-## 4. Feature Engineering
+## 4. Formules
 
-### 4.1 Loyer annuel
-
-Le revenu locatif annuel estimé est obtenu à partir du loyer médian au m², de la surface du bien et de 12 mois de location.
+On suppose que les charges représentent 5 % du prix du bien.
 
 ```math
-loyer_annuel = loyer_m2 \times surface \times 12
+charges = 0.05 \times prix
+```
+
+### Rendement net
+
+Le rendement net estime la rentabilité annuelle du bien après déduction des charges.
+
+```math
+rendement = \frac{loyer_annuel - charges}{prix}
+```
+
+Forme détaillée :
+
+```math
+rendement = \frac{(loyer_m2 \times surface \times 12) - (0.05 \times prix)}{prix}
+```
+
+### Demande locative
+
+La demande locative est approchée par le rapport entre la population et le nombre de logements, ajusté par le taux de vacance.
+
+```math
+demande_locative = \frac{population}{nombre_logements} \times (1 - taux_vacance)
+```
+
+### Liquidité
+
+La liquidité mesure la facilité théorique de revente d’un bien dans une zone donnée.
+
+```math
+liquidite = \frac{nombre_transactions_annuelles}{population}
+```
+
+## Construction du score composite
+
+Le score d’investissement combine les trois dimensions précédentes avec la pondération suivante :
+
+- 60 % pour le rendement
+- 30 % pour la demande locative
+- 10 % pour la liquidité
+
+Formule simplifiée :
+
+```math
+Score_Investissement = 0.6 \times rendement + 0.3 \times demande_locative + 0.1 \times liquidite
+```
+
+Formule détaillée :
+
+```math
+Score_Investissement =
+0.6 \times \left(\frac{(loyer_m2 \times surface \times 12) - (0.05 \times prix)}{prix}\right)
++ 0.3 \times \left(\frac{population}{nombre_logements} \times (1 - taux_vacance)\right)
++ 0.1 \times \left(\frac{nombre_transactions_annuelles}{population}\right)
+```
