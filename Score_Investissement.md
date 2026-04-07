@@ -13,7 +13,7 @@ Construire un indicateur composite permettant d’évaluer la pertinence d’un 
 ## 2. Données utilisées
 
 ### 2.1 Prix immobiliers (DVF)
-Source : https://www.data.gouv.fr/datasets/demandes-de-valeurs-foncieres  
+Source : https://www.data.gouv.fr/datasets/demandes-de-valeurs-foncieres
 
 Contenu :
 - prix de vente
@@ -28,10 +28,10 @@ Utilisation :
 ---
 
 ### 2.2 Loyers
-Source : https://www.data.gouv.fr/organizations/observatoires-locaux-des-loyers/datasets  
+Source : https://www.data.gouv.fr/organizations/observatoires-locaux-des-loyers/datasets
 
 Contenu :
-- loyers médian au m²
+- loyers médians au m²
 - segmentation géographique
 
 Utilisation :
@@ -56,7 +56,7 @@ Utilisation :
 ---
 
 ### 2.4 Logements / Bâtiments
-Source : https://www.data.gouv.fr/reuses/cartographie-des-batiments-de-paris  
+Source : https://www.data.gouv.fr/reuses/cartographie-des-batiments-de-paris
 
 Contenu :
 - nombre de bâtiments
@@ -68,7 +68,7 @@ Utilisation :
 ---
 
 ### 2.5 Taux de vacance
-Source : https://www.data.gouv.fr/datasets/logements-vacants-du-parc-prive-par-commune-departement-region-france  
+Source : https://www.data.gouv.fr/datasets/logements-vacants-du-parc-prive-par-commune-departement-region-france
 
 Contenu :
 - pourcentage de logements vacants
@@ -91,13 +91,9 @@ Utilisation :
 
 ## 3. Feature Engineering
 
-### 3.1 Rendement net
+### 3.1 Loyer annuel
 
-Hypothèse :
-- charges estimées à 5 % du prix du bien
-
-Formule :
+Le loyer annuel estimé est calculé à partir du loyer médian au m², de la surface du bien et de 12 mois de location.
 
 ```math
-rendement =
-\frac{(loyer\_m2 \times surface \times 12) - (0.05 \times prix)}{prix}
+loyer\_annuel = loyer\_m2 \times surface \times 12
