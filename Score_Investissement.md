@@ -103,23 +103,8 @@ DVF (même dataset que les prix)
 
 ---
 
-## 3. Variables et notations
 
-On note :
-
-- `prix` : prix d’achat du bien
-- `surface` : surface du bien en m²
-- `loyer_m2` : loyer médian au m²
-- `population` : population de la zone
-- `nombre_logements` : nombre estimé de logements
-- `taux_vacance` : part des logements vacants
-- `nombre_transactions_annuelles` : nombre de ventes observées sur une année
-
-Ces variables servent à construire les indicateurs intermédiaires puis le score final.
-
----
-
-## 4. Formules
+## 3. Formules
 
 On suppose que les charges représentent 5 % du prix du bien.
 
