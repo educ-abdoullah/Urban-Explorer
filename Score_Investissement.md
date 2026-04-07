@@ -180,12 +180,15 @@ Le taux de criminalité mesure le niveau de risque territorial observé dans une
 ```math
 taux\_criminalite =
 \frac{nombre\_faits\_criminels}{population}
+
 ```
 
 Comme un niveau élevé de criminalité réduit l’attractivité d’un investissement, on utilise une composante de sécurité définie comme l’inverse du risque :
 
 ```math
+
 securite = 1 - taux\_criminalite
+
 ```
 
 ---
@@ -204,18 +207,24 @@ Le score d’investissement combine les quatre dimensions précédentes avec la 
 ### 4.1 Formule simplifiée
 
 ```math
+
+
 Score\_Investissement =
 0.50 \times rendement +
 0.20 \times demandes\_locative +
 0.05 \times liquidité +
 0.25 \times securite
+
+
+
 ```
 
----
 
 ### 4.2 Formule détaillée
 
 ```math
+
+
 Score\_Investissement =
 0.50 \times \left(
 \frac{(loyer\_m2 \times surface \times 12) - (0.05 \times prix)}{prix}
@@ -232,9 +241,10 @@ Score\_Investissement =
 0.25 \times \left(
 1 - \frac{nombre\_faits\_criminels}{population}
 \right)
-```
+
+
 
 ```
-```
+
 
 	​
