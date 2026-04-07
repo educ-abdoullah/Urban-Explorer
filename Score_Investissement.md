@@ -132,29 +132,113 @@ On suppose que les charges représentent 5 % du prix du bien.
 charges = 0.05 \times prix
 
 
+````markdown
+## 3. Feature Engineering
 
-3.2 Rendement net
+### 3.2 Rendement net
 
 Le rendement net estime la rentabilité annuelle du bien après déduction des charges.
 
-rendement=loyerannuel−chargesprix
-rendement=
-prix
-loyer
-a
-	​
-
-nnuel−charges
-	​
-
+```math
+rendement =
+\frac{loyer\_annuel - charges}{prix}
+````
 
 Forme détaillée :
 
-rendement=(loyerm2×surface×12)−(0.05×prix)prix
-rendement=
-prix
-(loyer
-m
+```math
+rendement =
+\frac{(loyer\_m2 \times surface \times 12) - (0.05 \times prix)}{prix}
+```
+
+---
+
+### 3.3 Demande locative
+
+La demande locative est approchée par le rapport entre la population et le nombre de logements, ajusté par le taux de vacance.
+
+```math
+demandes\_locative =
+\frac{population}{nombre\_logements} \times (1 - taux\_vacance)
+```
+
+---
+
+### 3.4 Liquidité
+
+La liquidité mesure la facilité théorique de revente d’un bien dans une zone donnée.
+
+```math
+liquidité =
+\frac{nombre\_transactions\_annuelles}{population}
+```
+
+---
+
+### 3.5 Taux de criminalité
+
+Le taux de criminalité mesure le niveau de risque territorial observé dans une zone donnée. Il peut être approché par le nombre de faits ou signalements rapporté à la population.
+
+```math
+taux\_criminalite =
+\frac{nombre\_faits\_criminels}{population}
+```
+
+Comme un niveau élevé de criminalité réduit l’attractivité d’un investissement, on utilise une composante de sécurité définie comme l’inverse du risque :
+
+```math
+securite = 1 - taux\_criminalite
+```
+
+---
+
+## 4. Construction du score composite
+
+Le score d’investissement combine les quatre dimensions précédentes avec la pondération suivante :
+
+* 50 % pour le rendement
+* 20 % pour la demande locative
+* 5 % pour la liquidité
+* 25 % pour la sécurité
+
+---
+
+### 4.1 Formule simplifiée
+
+```math
+Score\_Investissement =
+0.50 \times rendement +
+0.20 \times demandes\_locative +
+0.05 \times liquidité +
+0.25 \times securite
+```
+
+---
+
+### 4.2 Formule détaillée
+
+```math
+Score\_Investissement =
+0.50 \times \left(
+\frac{(loyer\_m2 \times surface \times 12) - (0.05 \times prix)}{prix}
+\right)
++
+0.20 \times \left(
+\frac{population}{nombre\_logements} \times (1 - taux\_vacance)
+\right)
++
+0.05 \times \left(
+\frac{nombre\_transactions\_annuelles}{population}
+\right)
++
+0.25 \times \left(
+1 - \frac{nombre\_faits\_criminels}{population}
+\right)
+```
+
+```
+```
+
 	​
 
 2×surface×12)−(0.05×prix)
