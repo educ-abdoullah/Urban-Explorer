@@ -130,11 +130,9 @@ On suppose que les charges représentent 5 % du prix du bien.
 
 ```math
 charges = 0.05 \times prix
+```
 
-
-````markdown
-## 3. Feature Engineering
-
+`
 ### 3.2 Rendement net
 
 Le rendement net estime la rentabilité annuelle du bien après déduction des charges.
