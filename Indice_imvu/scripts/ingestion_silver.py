@@ -104,8 +104,7 @@ print(f"   -> {len(parcs)} espaces verts traités.")
 
 # 3. TRAITEMENT DES QUARTIERS ET ARRONDISSEMENTS
 
-print("3/4 - Traitement des quartiers et création des arrondissements...")
-# CORRECTION : On cherche "quartiers" et non "quartier_paris"
+print("3/4 - Traitement des iris et création des quartiers, arrondissements...")
 fichier_iris = trouver_fichier_recent("iris")
 iris = gpd.read_file(fichier_iris)
 
@@ -143,9 +142,8 @@ arrondissements.to_file(os.path.join(SILVER_DIR, "arrondissements_silver.geojson
 
 print(f"   -> Bilan : {len(iris)} IRIS, {len(quartiers)} Quartiers et {len(arrondissements)} Arrondissements générés.")
 
-# ==========================================
 # 4. TRAITEMENT DES JARDINS PARTAGÉS
-# ==========================================
+
 print("4/4 - Traitement des jardins partagés...")
 # CORRECTION : On cherche "jardins_partages" avec un underscore
 fichier_jardins = trouver_fichier_recent("jardins_partages")
