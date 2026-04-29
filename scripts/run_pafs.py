@@ -18,6 +18,7 @@ def run_pipeline(script_name: str) -> None:
 def main() -> None:
     run_pipeline("./silver/silver_pafs.py")
     run_pipeline("./gold/gold_pafs.py")
+    run_pipeline("./gold/goldiris.py")
     print("All PAFS pipelines finished.")
 
 
