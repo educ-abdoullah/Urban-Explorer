@@ -40,7 +40,7 @@ df_voie_publique = pd.read_parquet(os.path.join(latest_silver_dir, "voie_publiqu
 iris_gdf = gpd.read_file(os.path.join(latest_raw_dir, "iris.geojson"))
 
 #trafic
-files = glob.glob("./data/silver/20260428/trafic/*.parquet")
+files = glob.glob(latest_silver_dir+"/trafic/*.parquet")
 
 results = []
 
@@ -197,7 +197,7 @@ gold_mobilite["score_velib"] = (
 gold_mobilite["score_stationnement"] = gold_mobilite["places_km2_norm"]
 
 gold_mobilite["score_tc"] = (
-    0.5 * gold_mobilite["nb_arrets_norm"] + 0
+    1 * gold_mobilite["nb_arrets_norm"] + 0
     #0.5 * gold_mobilite["nb_lignes_norm"]
 )
 
@@ -209,10 +209,10 @@ gold_mobilite["score_trafic"] = (
 gold_mobilite["score_trafic_inverse"] = 100 - gold_mobilite["score_trafic"]
 
 gold_mobilite["score_mobilite"] = (
-    0.25 * gold_mobilite["score_tc"] +
-    0.25 * gold_mobilite["score_velib"] +
-    0.25 * gold_mobilite["score_stationnement"] +
-    0.25 * gold_mobilite["score_trafic_inverse"]
+    0.4 * gold_mobilite["score_tc"] +
+    0.1 * gold_mobilite["score_velib"] +
+    0.3* gold_mobilite["score_stationnement"] +
+    0.2 * gold_mobilite["score_trafic_inverse"]
 )
 
 gold_mobilite.to_parquet(os.path.join(GOLD_DAY_DIR, "score_mobilite.parquet"))
