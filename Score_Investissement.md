@@ -2,249 +2,186 @@
 
 ## 1. Objectif
 
-Construire un indicateur composite permettant d’évaluer la pertinence d’un investissement immobilier à Paris en combinant quatre dimensions principales :
+Construire un indicateur synthétique permettant d’évaluer la qualité d’un investissement immobilier à Paris.
 
-- la rentabilité du bien
+Le score repose sur 4 dimensions :
+
+- la rentabilité (rendement)
 - la tension locative
-- la liquidité
-- le taux de criminalité
+- la liquidité du marché
+- la sécurité (inverse de la criminalité)
 
-L’objectif est d’obtenir un **score synthétique** permettant de comparer plusieurs biens ou plusieurs zones géographiques à partir de données ouvertes.
+L’objectif est de comparer des zones (IRIS ou arrondissements) avec un score homogène.
 
 ---
 
 ## 2. Données utilisées
 
-### 2.1 Prix immobiliers (DVF)
+### 2.1 DVF — Transactions immobilières
 
-**Source :**  
-https://www.data.gouv.fr/datasets/demandes-de-valeurs-foncieres
+Source : https://www.data.gouv.fr/datasets/demandes-de-valeurs-foncieres
 
-**Contenu :**
-- prix de vente
-- surface du bien
-- type de bien
-- localisation
-
-**Utilisation :**
-- calcul du prix d’acquisition
+Utilisation :
+- prix d’acquisition
+- surface
+- nombre de transactions
+- calcul du prix au m²
 - calcul du rendement
 
 ---
 
 ### 2.2 Loyers
 
-**Source :**  
-https://www.data.gouv.fr/organizations/observatoires-locaux-des-loyers/datasets
+Source : Observatoires Locaux des Loyers
 
-**Contenu :**
-- loyers médians au m²
-- segmentation géographique
-
-**Utilisation :**
-- estimation du revenu locatif annuel
+Utilisation :
+- estimation du revenu locatif
+- base du rendement
 
 ---
 
 ### 2.3 Population
 
-**Sources :**
-- https://catalogue-donnees.insee.fr/fr/catalogue/recherche/DS_RP_POPULATION_COMP
-- https://catalogue-donnees.insee.fr/fr/catalogue/recherche/DS_POPULATIONS_REFERENCE
-- https://catalogue-donnees.insee.fr/fr/catalogue/recherche/DS_ESTIMATION_POPULATION
-- https://www.data.gouv.fr/reuses/population-paris
+Source : INSEE
 
-**Contenu :**
-- population totale par zone
-
-**Utilisation :**
-- calcul de la pression locative
-- normalisation de la liquidité
-- normalisation du taux de criminalité
+Utilisation :
+- normalisation des indicateurs
+- calcul tension locative
+- calcul liquidité
+- calcul criminalité
 
 ---
 
-### 2.4 Logements / Bâtiments
+### 2.4 Criminalité
 
-**Source :**  
-https://www.data.gouv.fr/reuses/cartographie-des-batiments-de-paris
+Sources :
+- données police/gendarmerie
+- données "Dans Ma Rue" (Paris)
 
-**Contenu :**
-- nombre de bâtiments
-- proxy du nombre de logements
-
-**Utilisation :**
-- estimation du parc immobilier
+Utilisation :
+- construction d’un score de risque
+- transformation en score de sécurité
 
 ---
 
-### 2.5 Taux de vacance
+## 3. Construction des indicateurs
 
-**Source :**  
-https://www.data.gouv.fr/datasets/logements-vacants-du-parc-prive-par-commune-departement-region-france
+### 3.1 Rendement net
 
-**Contenu :**
-- pourcentage de logements vacants
+Le rendement mesure la rentabilité d’un bien.
 
-**Utilisation :**
-- ajustement de la tension locative
+Formule :
 
----
+rendement = ((loyer_m2 × surface × 12) − (0.05 × prix)) / prix
 
-### 2.6 Transactions immobilières
+Puis :
 
-**Source :**  
-DVF (même dataset que les prix)
-
-**Contenu :**
-- nombre de ventes par zone et par année
-
-**Utilisation :**
-- calcul de la liquidité
-- estimation du dynamisme du marché
+score_rendement = normalize(rendement)
 
 ---
 
-### 2.7 Criminalité
+### 3.2 Tension locative
 
-**Sources :**
-- https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales
-- https://opendata.paris.fr/explore/dataset/dans-ma-rue/information/?disjunctive.conseilquartier&disjunctive.intervenant&disjunctive.type&disjunctive.soustype&disjunctive.arrondissement&disjunctive.prefixe&disjunctive.code_postal
+Elle mesure la pression de la demande sur le logement.
 
-**Contenu :**
-- faits de délinquance enregistrés
-- signalements urbains par arrondissement ou zone
-- informations territorialisées sur les nuisances et incivilités
+demande = (population / nombre_logements) × (1 − taux_vacance)
 
-**Utilisation :**
-- calcul d’un indicateur de risque territorial
-- intégration d’un facteur de sécurité dans le score d’investissement
+Puis :
+
+score_demande = normalize(demande)
 
 ---
 
-## 3. Formules
+### 3.3 Liquidité
 
-### 3.1 Charges
+La liquidité mesure la facilité de revente.
 
-On suppose que les charges représentent 5 % du prix du bien.
+liquidite = nombre_transactions / population
 
-```math
-charges = 0.05 \times prix
-```
+Puis :
 
-`
-### 3.2 Rendement net
-
-Le rendement net estime la rentabilité annuelle du bien après déduction des charges.
-
-```math
-rendement =
-\frac{loyer\_annuel - charges}{prix}
-````
-
-Forme détaillée :
-
-```math
-rendement =
-\frac{(loyer\_m2 \times surface \times 12) - (0.05 \times prix)}{prix}
-```
+score_liquidite = normalize(liquidite)
 
 ---
 
-### 3.3 Demande locative
+### 3.4 Sécurité (inverse de la criminalité)
 
-La demande locative est approchée par le rapport entre la population et le nombre de logements, ajusté par le taux de vacance.
+taux_criminalite = nombre_faits / population
 
-```math
-demandes\_locative =
-\frac{population}{nombre\_logements} \times (1 - taux\_vacance)
-```
+Transformation :
 
----
+score_securite_brut = 1 − taux_criminalite
 
-### 3.4 Liquidité
+Puis :
 
-La liquidité mesure la facilité théorique de revente d’un bien dans une zone donnée.
+score_securite = normalize(score_securite_brut)
 
-```math
-liquidité =
-\frac{nombre\_transactions\_annuelles}{population}
-```
+Important :
+- criminalité élevée → score faible
+- zone sûre → score élevé
 
 ---
 
-### 3.5 Taux de criminalité
+## 4. Normalisation
 
-Le taux de criminalité mesure le niveau de risque territorial observé dans une zone donnée. Il peut être approché par le nombre de faits ou signalements rapporté à la population.
+Tous les indicateurs sont normalisés pour être comparables.
 
-```math
-taux\_criminalite =
-\frac{nombre\_faits\_criminels}{population}
+score = 20 + 60 × (x − min(x)) / (max(x) − min(x))
 
-```
+Chaque score est donc compris entre :
 
-Comme un niveau élevé de criminalité réduit l’attractivité d’un investissement, on utilise une composante de sécurité définie comme l’inverse du risque :
-
-```math
-
-securite = 1 - taux\_criminalite
-
-```
+[20 ; 80]
 
 ---
 
-## 4. Construction du score composite
+## 5. Score d’investissement final
 
-Le score d’investissement combine les quatre dimensions précédentes avec la pondération suivante :
+Pondérations :
 
-* 50 % pour le rendement
-* 20 % pour la demande locative
-* 5 % pour la liquidité
-* 25 % pour la sécurité
+- Rendement : 50 %
+- Demande locative : 20 %
+- Liquidité : 5 %
+- Sécurité : 25 %
+
+Formule :
+
+Score_Investissement =  
+0.50 × score_rendement +  
+0.20 × score_demande +  
+0.05 × score_liquidite +  
+0.25 × score_securite
 
 ---
 
-### 4.1 Formule simplifiée
+## 6. Interprétation
 
-```math
+- Score élevé → zone attractive pour investir
+- Score faible → zone risquée ou peu rentable
 
+---
 
-Score\_Investissement =
-0.50 \times rendement +
-0.20 \times demandes\_locative +
-0.05 \times liquidité +
-0.25 \times securite
+## 7. Points importants
 
+- Tous les indicateurs sont data-driven (DVF + INSEE + loyers)
+- Les scores sont comparables entre zones
+- Le modèle est simple mais robuste
+- La sécurité a un poids significatif (25 %)
 
+---
 
-```
+## 8. Limites
 
+- approximation des loyers
+- estimation de la criminalité
+- absence de fiscalité détaillée
+- charges simplifiées (5 %)
 
-### 4.2 Formule détaillée
+---
 
-```math
+## 9. Conclusion
 
+Ce score permet de :
 
-Score\_Investissement =
-0.50 \times \left(
-\frac{(loyer\_m2 \times surface \times 12) - (0.05 \times prix)}{prix}
-\right)
-+
-0.20 \times \left(
-\frac{population}{nombre\_logements} \times (1 - taux\_vacance)
-\right)
-+
-0.05 \times \left(
-\frac{nombre\_transactions\_annuelles}{population}
-\right)
-+
-0.25 \times \left(
-1 - \frac{nombre\_faits\_criminels}{population}
-\right)
-
-
-
-```
-
-
-	​
+- comparer rapidement des zones
+- détecter des opportunités
+- intégrer plusieurs dimensions clés de l’investissement immobilier
