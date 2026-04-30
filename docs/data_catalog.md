@@ -2,7 +2,7 @@
 
 ## Vue d'ensemble
 
-Le projet mobilise **11 sources de données ouvertes** issues de quatre producteurs principaux : la Ville de Paris, l'INSEE, Île-de-France Mobilités et data.gouv.fr. Toutes les sources sont en licence ouverte (Etalab / ODbL). Le millésime de référence est **2022–2025** selon les indicateurs.
+Le projet mobilise **10 sources de données ouvertes** issues de quatre producteurs principaux : la Ville de Paris, l'INSEE, Île-de-France Mobilités et data.gouv.fr. Toutes les sources sont en licence ouverte (Etalab / ODbL). Le millésime de référence est **2022–2025** selon les indicateurs.
 
 ---
 
@@ -185,23 +185,7 @@ Le projet mobilise **11 sources de données ouvertes** issues de quatre producte
 
 ---
 
-## 11. Logements vacants
 
-| Champ | Détail |
-|---|---|
-| **Producteur** | DGALN / SDES |
-| **URL** | https://www.data.gouv.fr/datasets/logements-vacants-du-parc-prive-par-commune |
-| **Licence** | Licence Ouverte Etalab 2.0 |
-| **Format** | CSV |
-| **Maille géographique** | Commune |
-| **Millésime utilisé** | 2022 |
-| **Variables clés** | taux de vacance du parc privé |
-
-**Rôle dans le projet :** ajustement de la demande locative dans le **Score Investissement** (`demande_locative = population / nb_logements × (1 − taux_vacance)`).
-
-**Justification du choix :** indicateur indispensable pour ne pas surestimer la tension locative dans des zones où une part du parc est inoccupée. Limite : maille communale uniquement, pas de déclinaison IRIS disponible.
-
----
 
 ## Synthèse des sources par score
 
@@ -221,3 +205,122 @@ Le projet mobilise **11 sources de données ouvertes** issues de quatre producte
 - **Millésimes différents** : les données couvrent 2022 à 2025 selon les sources — les comparaisons inter-indicateurs supposent une relative stabilité structurelle sur cette période.
 - **Pondérations méthodologiques** : les poids choisis dans chaque score (ex : 50 % rendement dans le Score Investissement, 40 % TC dans le Score Mobilité) relèvent de choix délibérés documentés dans les fichiers `scores/`. Ils peuvent être discutés et ajustés.
 - **Données dynamiques** : Vélib' et l'offre TC varient selon l'heure et le jour — les valeurs utilisées correspondent à des agrégats ou des snapshots archivés.
+
+---
+
+## Détail des calculs par indicateur
+
+### Score Investissement
+
+#### Charges estimées
+$$charges = 0.05 \times prix$$
+
+#### Rendement brut
+$$rendement\_brut = \frac{loyer\_m2\_median \times 12}{prix\_m2\_median}$$
+
+#### Rendement net
+$$rendement\_net = \frac{(loyer\_m2 \times surface \times 12) - (0.05 \times prix)}{prix}$$
+
+#### Demande locative
+$$demande\_locative = \frac{population}{nombre\_logements} \times (1 - taux\_vacance)$$
+
+#### Liquidité
+$$liquidite = \frac{nombre\_transactions\_annuelles}{population}$$
+
+#### Taux de criminalité & sécurité
+$$taux\_criminalite = \frac{nombre\_faits\_criminels}{population}$$
+$$score\_securite = 1 - taux\_criminalite$$
+
+#### Score composite final
+$$Score\_Investissement = 0.50 \times rendement + 0.20 \times demande\_locative + 0.05 \times liquidite + 0.25 \times securite$$
+
+---
+
+### Score Mobilité
+
+#### Normalisation commune (min-max)
+$$X_{norm} = 100 \times \frac{X - X_{min}}{X_{max} - X_{min}}$$
+
+#### Sous-score Vélib'
+$$Score_{Velib} = 0.5 \times stations_{norm} + 0.5 \times capacite_{norm}$$
+
+#### Sous-score Stationnement
+$$Score_{Stationnement} = densite\_emplacements_{norm}$$
+
+#### Sous-score Trafic
+$$Score_{Trafic} = 0.5 \times occupation_{norm} + 0.5 \times debit_{norm}$$
+
+> Le trafic est utilisé **en négatif** dans le score global : une forte pression automobile dégrade le score.
+
+#### Score Mobilité global
+$$Score\_Mobilite = 0.4 \times TC_{norm} + 0.1 \times Velib_{norm} + 0.3 \times Stationnement_{norm} - 0.2 \times Trafic_{norm}$$
+
+---
+
+### Indice de Morphologie Végétale Urbaine (IMVU)
+
+#### Normalisation commune (min-max)
+$$X_{norm} = \frac{X - X_{min}}{X_{max} - X_{min}} \times 100$$
+
+#### A. Volume de Canopée des Rues (DC)
+
+Diamètre du tronc à partir de la circonférence :
+$$D = \frac{Circonference}{\pi}$$
+
+Rayon de canopée estimé (coefficient forestier urbain $\alpha \approx 20$) :
+$$R_{canopee} = \alpha \times D_{metres}$$
+
+Surface de canopée par arbre :
+$$S_{arbre} = \pi \times R_{canopee}^2$$
+
+Densité de canopée du quartier (arbres hors espaces verts uniquement) :
+$$DC = \frac{\sum S_{arbre}}{Surface\_Quartier} \times 100$$
+
+#### B. Taux de Couverture Pondéré (TCP)
+
+Surface effective selon la qualité de l'espace vert (coefficient $\lambda$) :
+
+| Type d'espace | $\lambda$ |
+|---|---|
+| Bois | 1.0 |
+| Squares | 0.8 |
+| Cimetières | 0.4 |
+
+$$S_{effective} = Surface_{EV} \times \lambda$$
+
+$$TCP = \frac{\sum S_{effective}}{Surface\_Quartier} \times 100$$
+
+#### C. Score IMVU global
+$$IMVU = 0.5 \times TCP_{norm} + 0.3 \times DC_{norm} + 0.2 \times Initiatives_{norm}$$
+
+---
+
+### Paris Age-Friendly Score (PAFS)
+
+#### Formule générale
+$$Score_{PAFS} = \sum_i (Equipement_i \times Poids_i) - (Nuisance \times Poids_N)$$
+
+#### Grille de pondération par profil
+
+| Équipement | Junior | Jeune Adulte | Actif | Senior |
+|---|:---:|:---:|:---:|:---:|
+| Écoles & crèches | Très fort (+) | Neutre | Neutre | Neutre |
+| Bars & brasseries | Neutre | Très fort (+) | Moyen (+) | Faible (+) |
+| Pharmacies & santé | Moyen (+) | Faible (+) | Moyen (+) | Très fort (+) |
+| Piscines & sport | Fort (+) | Fort (+) | Fort (+) | Moyen (+) |
+| Espaces verts & bancs | Fort (+) | Moyen (+) | Moyen (+) | Très fort (+) |
+| Bruit | Négatif (−) | Neutre | Faible (−) | Très négatif (−) |
+
+> Le score bruit est utilisé en négatif via `score_bruit_inverse` dans les sorties Gold.
+
+---
+
+### Normalisation globale et score urbain final
+
+Tous les sous-scores sont normalisés sur une échelle 0–100 via min-max avant agrégation :
+
+$$x' = 100 \times \frac{x - x_{min}}{x_{max} - x_{min}}$$
+
+> Si $x_{max} = x_{min}$, la valeur est remplacée par une valeur neutre (0 ou 50 selon le contexte) pour éviter la division par zéro.
+
+Le `score_urbain_global` présent dans les sorties Gold est une agrégation pondérée des scores de profil. Les poids sont définis et versionnés dans [`scripts/gold/04_build_gold_score_urbain_iris.py`](scripts/gold/04_build_gold_score_urbain_iris.py) et [`scripts/gold/05_build_gold_score_urbain_arr.py`](scripts/gold/05_build_gold_score_urbain_arr.py).
