@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carte | Urban Data Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/map.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="map-body">
+  <div id="loader" class="loader-overlay is-visible"><div class="loader"></div><span>Chargement des données territoriales...</span></div>
+  <header class="map-header">
+    <a class="brand" href="index.html"><span class="brand-mark">U</span><span>Urban Data Explorer</span></a>
+    <nav class="map-nav"><a href="index.html">Accueil</a><a class="is-active" href="map.html">Carte</a><a href="paris.html">Paris</a><a href="graph.html">Graphiques</a><a href="ranking.html">Classements</a></nav>
+  </header>
+  <main class="map-shell">
+    <aside class="sidebar" aria-label="Filtres cartographiques">
+      <div class="sidebar-section">
+        <span class="panel-label">Vue</span>
+        <div class="segmented" role="group" aria-label="Niveau géographique">
+          <button class="segment is-active" data-level="arrondissement">Arrondissements</button>
+          <button class="segment" data-level="iris">IRIS</button>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-title-row">
+          <label class="panel-label" for="year-slider">Année</label>
+          <strong id="year-value" class="year-value">2024</strong>
+        </div>
+        <input id="year-slider" class="range-input" type="range" min="2022" max="2024" step="1" value="2024">
+        <div class="range-labels"><span>2022</span><span>2023</span><span>2024</span></div>
+      </div>
+
+      <div class="sidebar-section">
+        <label class="panel-label" for="analysis-preset">Objectif d’analyse</label>
+        <select id="analysis-preset" class="control-input"></select>
+        <p id="preset-help" class="helper-text"></p>
+      </div>
+
+      <div class="sidebar-section">
+        <span class="panel-label">Recherche par liste</span>
+        <div class="list-picker">
+          <label class="search-select-label" for="arrondissement-filter">Arrondissement</label>
+          <input id="arrondissement-filter" class="control-input list-search" type="search" placeholder="Rechercher dans la liste...">
+          <select id="arrondissement-select" class="control-input" size="5"></select>
+        </div>
+        <div class="list-picker">
+          <label class="search-select-label" for="quartier-filter">Quartier</label>
+          <input id="quartier-filter" class="control-input list-search" type="search" placeholder="Rechercher dans la liste...">
+          <select id="quartier-select" class="control-input" size="5"></select>
+        </div>
+        <div class="list-picker">
+          <label class="search-select-label" for="iris-filter">IRIS</label>
+          <input id="iris-filter" class="control-input list-search" type="search" placeholder="Rechercher dans la liste...">
+          <select id="iris-select" class="control-input" size="5"></select>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <label class="panel-label" for="color-indicator">Indicateur couleur</label>
+        <select id="color-indicator" class="control-input"></select>
+        <p id="indicator-help" class="helper-text"></p>
+      </div>
+
+      <div class="sidebar-section">
+        <label class="panel-label" for="circle-indicator">Cercles proportionnels</label>
+        <select id="circle-indicator" class="control-input"></select>
+      </div>
+
+      <div class="sidebar-section">
+        <span class="panel-label">Fond de carte</span>
+        <div id="map-style-swatches" class="swatch-row" aria-label="Fond de carte"></div>
+      </div>
+
+    </aside>
+
+    <section class="map-stage">
+      <div id="map"></div>
+      <div class="map-legend-overlay" aria-label="Légendes de la carte">
+        <div id="legend" class="legend"></div>
+        <div id="circle-legend" class="circle-legend"></div>
+      </div>
+      <div class="map-toolbar">
+        <button id="fit-paris" class="icon-button" title="Recentrer la carte" aria-label="Recentrer la carte">↺</button>
+        <button id="toggle-details" class="icon-button" title="Afficher ou masquer les détails" aria-label="Afficher ou masquer les détails">☰</button>
+      </div>
+    </section>
+
+    <aside id="details-panel" class="details-panel" aria-label="Détails de la zone">
+      <section id="zone-details" class="details-section empty-state">
+        <h2>Sélectionnez une zone</h2>
+        <p>Cliquez sur la carte ou utilisez les listes pour afficher les indicateurs détaillés.</p>
+      </section>
+
+      <section id="comparison" class="details-section">
+        <div class="section-title-row">
+          <h2>Comparaison</h2>
+          <button id="clear-comparison" class="text-button">Réinitialiser</button>
+        </div>
+        <div class="comparison-actions">
+          <button id="set-zone-a" class="button button-secondary">Zone A</button>
+          <button id="set-zone-b" class="button button-secondary">Zone B</button>
+        </div>
+        <div id="comparison-view" class="comparison-view"></div>
+      </section>
+    </aside>
+  </main>
+
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/map-init.js"></script>
+  <script src="js/map-layers.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/comparison.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/map-events.js"></script>
+  <script src="js/main-map.js"></script>
+</body>
+</html>

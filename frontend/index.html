@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urban Data Explorer | Dynamiques du logement à Paris</title>
+  <meta name="description" content="Explorer, comprendre et comparer les dynamiques du logement au coeur de Paris.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Urban Data Explorer">
+      <span class="brand-mark">U</span>
+      <span>Urban Data Explorer</span>
+    </a>
+    <nav class="site-nav" aria-label="Navigation principale"><a class="is-active" href="index.html">Accueil</a><a href="map.html">Carte</a><a href="paris.html">Paris</a><a href="graph.html">Graphiques</a><a href="ranking.html">Classements</a></nav>
+    <a class="button button-primary" href="map.html">Accéder à la carte</a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <span class="eyebrow">Analyse territoriale et logement</span>
+        <h1>Urban Data Explorer</h1>
+        <p class="hero-subtitle">Explorer, comprendre et comparer les dynamiques du logement au cœur de Paris.</p>
+        <p class="hero-text">Paris n’est pas seulement une carte touristique. Derrière chaque arrondissement, chaque quartier et chaque IRIS se cachent des dynamiques immobilières, sociales et urbaines différentes. Urban Data Explorer transforme les données ouvertes en indicateurs lisibles pour mieux comprendre les prix, les loyers, la population, la sécurité, la mobilité et l’attractivité urbaine.</p>
+        <div class="hero-actions">
+          <a class="button button-primary button-large" href="map.html">Accéder à la carte</a>
+          <a class="button button-secondary button-large" href="methodology.html">Voir la méthodologie</a>
+        </div>
+      </div>
+      <div class="hero-visual" aria-label="Aperçu analytique de Paris">
+        <div class="paris-panel">
+          <div class="panel-topline">
+            <span>Paris 2024</span>
+            <strong>Score urbain</strong>
+          </div>
+          <div class="mini-map" aria-hidden="true">
+            <span class="zone zone-a"></span>
+            <span class="zone zone-b"></span>
+            <span class="zone zone-c"></span>
+            <span class="zone zone-d"></span>
+            <span class="zone zone-e"></span>
+          </div>
+          <div class="metric-row"><span>Prix médian</span><strong>9 820 €/m²</strong></div>
+          <div class="metric-row"><span>Rendement net</span><strong>3,4 %</strong></div>
+          <div class="metric-row"><span>Mobilité</span><strong>68 / 100</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading">
+        <span class="eyebrow">Pourquoi cet outil </span>
+        <h2>Lire Paris à plusieurs échelles</h2>
+        <p>Du niveau arrondissement au niveau IRIS, l’application met en évidence les contrastes de prix, de rendement, de mobilité, de sécurité et de qualité urbaine.</p>
+      </div>
+      <div class="feature-grid">
+        <article class="feature-card">
+          <span class="icon-chip">01</span>
+          <h3>Comparer les zones</h3>
+          <p>Mettre côte à côte deux territoires et visualiser les écarts sur les indicateurs clés.</p>
+        </article>
+        <article class="feature-card">
+          <span class="icon-chip">02</span>
+          <h3>Explorer les arrondissements</h3>
+          <p>Identifier rapidement les secteurs les plus attractifs selon le score urbain ou immobilier.</p>
+        </article>
+        <article class="feature-card">
+          <span class="icon-chip">03</span>
+          <h3>Comprendre les IRIS</h3>
+          <p>Descendre à une maille fine pour observer les dynamiques locales et les micro-différences.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section soft-band">
+      <div class="section-heading">
+        <span class="eyebrow">Données exploitées</span>
+        <h2>Un socle multi-source pour qualifier le logement</h2>
+      </div>
+      <div class="data-strip">
+        <span>DVF</span>
+        <span>OLL</span>
+        <span>INSEE</span>
+        <span>Criminalité</span>
+        <span>Mobilité</span>
+        <span>Environnement</span>
+        <span>Services</span>
+      </div>
+    </section>
+
+    <section class="section split-section">
+      <div>
+        <span class="eyebrow">Dashboard</span>
+        <h2>Ce que permet l’exploration</h2>
+        <p>La carte interactive croise les scores urbains, les métriques immobilières et les données de contexte pour guider l’analyse territoriale.</p>
+      </div>
+      <div class="capability-list">
+        <div><strong>Carte choroplèthe</strong><span>Couleurs dynamiques selon l’indicateur choisi.</span></div>
+        <div><strong>Cercles proportionnels</strong><span>Visualisation parallèle des volumes ou des valeurs.</span></div>
+        <div><strong>Classements</strong><span>Top 10 par score, prix, rendement ou population.</span></div>
+        <div><strong>Graphiques</strong><span>Evolution des indicateurs disponibles par zone.</span></div>
+      </div>
+    </section>
+
+    <section class="section methodology-preview">
+      <div class="section-heading">
+        <span class="eyebrow">Méthodologie data</span>
+        <h2>De la donnée brute aux scores lisibles</h2>
+      </div>
+      <div class="pipeline">
+        <div><strong>Bronze</strong><span>Collecte et stockage des sources ouvertes.</span></div>
+        <div><strong>Silver</strong><span>Nettoyage, jointures géographiques et harmonisation.</span></div>
+        <div><strong>Gold</strong><span>Calcul des scores, agrégations et exposition API.</span></div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <h2>Explorez les dynamiques du logement parisien</h2>
+      <p>Accédez à la carte, filtrez par niveau, recherchez une zone et comparez les territoires.</p>
+      <div class="hero-actions centered">
+        <a class="button button-primary button-large" href="map.html">Explorer les arrondissements</a>
+        <a class="button button-secondary button-large" href="map.html#comparison">Comparer les zones</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><span>Urban Data Explorer</span><nav><a href="map.html">Carte</a><a href="graph.html">Graphiques</a><a href="ranking.html">Classements</a></nav></footer>
+
+  <script src="js/main-landing.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paris | Urban Data Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">U</span><span>Urban Data Explorer</span></a>
+    <nav class="site-nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="map.html">Carte</a>
+      <a class="is-active" href="paris.html">Paris</a>
+      <a href="graph.html">Graphiques</a>
+      <a href="ranking.html">Classements</a>
+    </nav>
+  </header>
+
+  <main class="dashboard-page">
+    <section class="dashboard-hero">
+      <div>
+        <span class="eyebrow">Analyse globale</span>
+        <h1>Paris</h1>
+        <p>Vision consolidée des arrondissements pour repérer rapidement les meilleurs profils d’investissement, de rendement, d’accessibilité et de cadre de vie.</p>
+      </div>
+    </section>
+
+    <section id="best-cards" class="decision-cards best-cards"></section>
+    <section id="global-grid" class="dashboard-grid global-grid"></section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main-paris.js"></script>
+</body>
+</html>

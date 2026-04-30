@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classements | Urban Data Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">U</span><span>Urban Data Explorer</span></a>
+    <nav class="site-nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="map.html">Carte</a>
+      <a href="paris.html">Paris</a>
+      <a href="graph.html">Graphiques</a>
+      <a class="is-active" href="ranking.html">Classements</a>
+    </nav>
+  </header>
+
+  <main class="dashboard-page">
+    <section class="dashboard-hero">
+      <div>
+        <span class="eyebrow">Aide à la décision</span>
+        <h1>Classements</h1>
+        <p>Identifiez rapidement les arrondissements les plus chers, les plus sûrs, les plus performants ou les plus risqués.</p>
+      </div>
+    </section>
+
+    <section id="decision-cards" class="decision-cards"></section>
+
+    <section class="analysis-layout ranking-layout">
+      <aside class="analysis-sidebar">
+        <div class="list-picker unified-list">
+          <label class="search-select-label" for="ranking-search">Indicateur</label>
+          <input id="ranking-search" class="control-input list-search" type="search" placeholder="Rechercher dans la liste...">
+          <select id="ranking-indicator" class="control-input" size="12"></select>
+        </div>
+
+        <label class="dashboard-control compact-control">
+          <span class="panel-label">Taille du classement</span>
+          <select id="ranking-top" class="control-input">
+            <option value="10">Top 10</option>
+            <option value="20">Top 20</option>
+          </select>
+        </label>
+
+        <div class="status-pill">
+          <span>Niveau</span>
+          <strong>Arrondissements</strong>
+        </div>
+      </aside>
+
+      <section class="ranking-panel analysis-content">
+        <table class="ranking-table">
+          <thead>
+            <tr>
+              <th>Rang</th>
+              <th>Zone</th>
+              <th>Indicateur</th>
+              <th>Valeur</th>
+              <th>Performance</th>
+            </tr>
+          </thead>
+          <tbody id="ranking-table-body"></tbody>
+        </table>
+      </section>
+    </section>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main-ranking.js"></script>
+</body>
+</html>

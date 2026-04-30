@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graphiques | Urban Data Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">U</span><span>Urban Data Explorer</span></a>
+    <nav class="site-nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="map.html">Carte</a>
+      <a href="paris.html">Paris</a>
+      <a class="is-active" href="graph.html">Graphiques</a>
+      <a href="ranking.html">Classements</a>
+    </nav>
+  </header>
+
+  <main class="dashboard-page">
+    <section class="dashboard-hero">
+      <div>
+        <span class="eyebrow">Analyse temporelle</span>
+        <h1>Graphiques</h1>
+        <p>Suivez les évolutions multi-années d’une zone et comparez les signaux immobiliers, urbains et démographiques.</p>
+      </div>
+    </section>
+
+    <section class="analysis-layout graph-layout">
+      <aside class="analysis-sidebar">
+        <label class="dashboard-control compact-control">
+          <span class="panel-label">Niveau</span>
+          <select id="graph-level" class="control-input">
+            <option value="arrondissement">Arrondissement</option>
+            <option value="iris">IRIS</option>
+          </select>
+        </label>
+
+        <div class="list-picker unified-list">
+          <label class="search-select-label" for="graph-search">Zone</label>
+          <input id="graph-search" class="control-input list-search" type="search" placeholder="Rechercher dans la liste...">
+          <select id="graph-zone" class="control-input" size="10"></select>
+        </div>
+
+      </aside>
+
+      <section id="graph-grid" class="dashboard-grid analysis-content"></section>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main-graph.js"></script>
+</body>
+</html>
