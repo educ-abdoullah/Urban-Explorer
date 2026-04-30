@@ -19,12 +19,18 @@ Plutôt que de dire qu'un quartier est "bien" ou "mauvais" de manière absolue, 
 Pour construire cet indicateur, nous croisons des données provenant de sources officielles en Open Data :
 
 * **Commerces & Vie Locale :** `BDCOM de l'Apur` (Recense tous les restaurants, cafés, brasseries et commerces de bouche).
+https://opendata.apur.org/datasets/Apur::bdcom-2023/about
 * **Sport :** `RES (Data ES)` (Inventaire complet des équipements sportifs : du skatepark au boulodrome).
 * **Espaces Verts :** `Espaces verts et boisés (Île-de-France)` (Cartographie des parcs, jardins et forêts ouverts au public).
+https://opendata.paris.fr/explore/dataset/espaces_verts/export/?disjunctive.type_ev&disjunctive.categorie&disjunctive.adresse_codepostal&disjunctive.presence_cloture&basemap=jawg.dark&location=13,48.8315,2.34112
 * **Éducation :** `Secteurs scolaires (Paris Data)` (Localisation des écoles primaires, collèges et lycées).
+https://data-iau-idf.opendata.arcgis.com/
 * **Santé :** `FINESS / Paris Data` (Emplacement des pharmacies, centres de santé et hôpitaux).
+https://www.data.gouv.fr/datasets/les-etablissements-hospitaliers-franciliens-idf
+https://www.data.gouv.fr/datasets/carte-des-pharmacies-de-paris-idf
 * **Qualité de Vie :** `Cartographie du bruit (Bruitparif)` (Identification des zones bruyantes pour ajuster le score de confort).
-* **Mobilier Urbain :** `Bancs et Sanisettes (Paris Data)` (Essentiel pour le score de confort des seniors et des jeunes enfants).
+https://www.bfmtv.com/immobilier/renovation-travaux/carte-quels-sont-les-arrondissements-les-plus-bruyants-de-paris_AV-202407220475.html#:~:text=L'%C3%A9tude%20r%C3%A9v%C3%A8le%20que%20les,sonore%20est%20autour%20de%2040dB.
+
 
 ---
 
