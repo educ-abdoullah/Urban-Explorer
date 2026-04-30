@@ -40,12 +40,12 @@ Pour mesurer la pression automobile, deux jeux de données de la Ville de Paris 
 - **Comptage routier - Historique - Données trafic issues des capteurs permanents** ;
 - **Comptage routier - Référentiel géographique**.
 
-Le premier contient les mesures historiques de trafic issues des capteurs permanents depuis **2010 jusqu’à l’année A-1**.  
+Le premier contient les mesures historiques de trafic issues des capteurs permanents de l'année 2025  
 Le second contient la géométrie des arcs routiers et permet la jointure avec les comptages via l’identifiant **`iu_ac`**.
 
 **Variables mobilisables :**
-- débit moyen annuel ;
-- somme annuelle des débits ;
+- débit moyen;
+- somme des débits ;
 - pression de trafic rapportée à la longueur d’arc ou à la surface du quartier.
 
 **Rôle dans le score :** mesurer la pression routière locale.  
@@ -80,8 +80,6 @@ Le jeu sur le stationnement en ouvrage recense les parcs de stationnement et leu
 Pour les transports en commun, les sources utilisées proviennent d’**Île-de-France Mobilités** :
 
 - **Arrêts et lignes associées** ;
-- **Horaires prévus sur les lignes de transport en commun d’Île-de-France (GTFS)** ;
-- éventuellement **Tracés des lignes de transport en commun d’Île-de-France**.
 
 Le jeu **Arrêts et lignes associées** liste les lignes du réseau francilien et les arrêts desservis.  
 Le jeu **GTFS** décrit l’offre théorique de transport sur les 30 prochains jours pour les trains, RER, métros, tramways, bus et cars franciliens.
@@ -89,10 +87,6 @@ Le jeu **GTFS** décrit l’offre théorique de transport sur les 30 prochains j
 **Variables mobilisables :**
 - nombre d’arrêts dans le quartier ;
 - nombre de lignes desservant le quartier ;
-- présence d’un arrêt de métro ;
-- présence d’un arrêt de tramway ;
-- nombre de lignes de bus ;
-- offre théorique de desserte.
 
 **Rôle dans le score :** mesurer l’accessibilité aux transports collectifs, qui constitue la composante principale du score de mobilité globale.
 
@@ -117,19 +111,8 @@ Chaque sous-indicateur est calculé à l’échelle du **quartier administratif*
 
 Le sous-score transports collectifs vise à mesurer la facilité d’accès au métro, au tram et au bus.
 
-Exemple de variables retenues :
+Variable retenue :
 - nombre d’arrêts de transport collectif dans le quartier ;
-- nombre de lignes différentes desservant le quartier ;
-- bonus si présence de métro ;
-- bonus si présence de tramway.
-
-Exemple de formule :
-
-\[
-TC = 0.4 \times \text{nb\_arrets\_norm} + 0.3 \times \text{nb\_lignes\_norm} + 0.2 \times \text{metro\_norm} + 0.1 \times \text{tram\_norm}
-\]
-
-Le métro et le tram peuvent être davantage valorisés car ils représentent des modes plus structurants que le bus. Cette pondération relève d’un **choix méthodologique**.
 
 ---
 
@@ -137,19 +120,17 @@ Le métro et le tram peuvent être davantage valorisés car ils représentent de
 
 Le sous-score Vélib’ mesure l’accessibilité locale à la mobilité partagée à vélo.
 
-Exemple de variables retenues :
+Variables retenues :
 - nombre de stations ;
 - capacité totale ;
-- disponibilité moyenne en vélos ;
-- distance moyenne à la station la plus proche.
 
 Exemple de formule :
 
 \[
-Velib = 0.35 \times \text{stations\_norm} + 0.25 \times \text{capacite\_norm} + 0.25 \times \text{velos\_dispo\_norm} + 0.15 \times (1 - \text{distance\_norm})
+Velib = 0.5 \* stations + 0.5 \*capacité
 \]
 
-Plus la densité de stations et la disponibilité sont élevées, plus le sous-score est fort.
+Plus la densité de stations est élevée , plus le sous-score est fort.
 
 ---
 
@@ -157,20 +138,12 @@ Plus la densité de stations et la disponibilité sont élevées, plus le sous-s
 
 Le sous-score stationnement mesure la disponibilité d’emplacements de stationnement à proximité.
 
-Exemple de variables retenues :
-- nombre d’emplacements sur voirie ;
+Variable retenue :
 - densité d’emplacements ;
-- présence d’un parking en ouvrage.
-
-Exemple de formule :
 
 \[
-Stationnement = 0.6 \times \text{emplacements\_norm} + 0.4 \times \text{ouvrage\_norm}
+Stationnement = densité au km² normalisée
 \]
-
-Ce sous-score peut être inclus ou non selon l’orientation du projet :
-- **oui** si l’on veut mesurer l’accessibilité tous modes ;
-- **avec prudence** si l’on cherche un indicateur centré sur la mobilité durable.
 
 ---
 
@@ -178,14 +151,14 @@ Ce sous-score peut être inclus ou non selon l’orientation du projet :
 
 Le sous-score trafic mesure la pression routière dans le quartier.
 
-Exemple de variables retenues :
-- débit routier moyen annuel ;
-- intensité du trafic rapportée à la longueur de voirie mesurée.
+Variables retenues :
+- débit routier moyen;
+- occupation moyenne;
 
 Exemple de formule :
 
 \[
-Trafic = \text{debit\_annuel\_norm}
+Trafic = 0.5 \* occupation moyenne + 0.5 \*débit routier moyen
 \]
 
 Contrairement aux autres composantes, le trafic est utilisé **en négatif** dans le score final : plus il est élevé, plus il traduit une forte pression automobile, du bruit, de la congestion et un environnement moins favorable à certaines mobilités du quotidien.
@@ -199,7 +172,7 @@ Les variables n’étant pas exprimées dans la même unité, elles doivent êtr
 Une normalisation min-max peut être utilisée :
 
 \[
-X_{norm} = 100 \times \frac{X - X_{min}}{X_{max} - X_{min}}
+X_{norm} = 100 \* {X - X_{min}}{X_{max} - X_{min}}
 \]
 
 Cette transformation permet d’obtenir pour chaque variable une valeur comprise entre **0 et 100**.
@@ -213,7 +186,7 @@ Cette transformation permet d’obtenir pour chaque variable une valeur comprise
 Une formule simple et lisible peut être :
 
 \[
-Score\_mobilite = 0.45 \times TC + 0.25 \times Velib + 0.15 \times Stationnement - 0.15 \times Trafic
+Score\_mobilite = 0.4 \* TC + 0.1 \* Velib + 0.3 \* Stationnement - 0.2 \* Trafic
 \]
 
 ### Interprétation
